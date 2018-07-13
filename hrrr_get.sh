@@ -14,7 +14,7 @@ export HRRRSTAGING=/home/greg/hrrr_staging/$UTCDATE
 /usr/bin/echo $UTCDATE
 
 #CHECK NOAA Server using CHECKURL definition for current model run
-/usr/bin/curl --fail  $CHECKURL.$UTCDATE/ > $HRRRSTAGING/hrrr.current
+/usr/bin/curl --fail  $CHECKURL.$UTCDATE/conus/ > $HRRRSTAGING/hrrr.current
 FAIL=$?
 /usr/bin/echo $FAIL
 
@@ -25,7 +25,7 @@ if [[ "$FAIL" != "0" ]] ; then
 	/usr/bin/echo $HRRRSTAGING
 	/usr/bin/mkdir -p $HRRRSTAGING
 	/usr/bin/echo $UTCDATE
-	/usr/bin/curl --fail %CHECKURL.$UTCDATE/ > $HRRRSTAGING/hrrr.current
+	/usr/bin/curl --fail %CHECKURL.$UTCDATE/conus/ > $HRRRSTAGING/hrrr.current
 	FAIL2=$?
 	if [[ "$FAIL2" != "0" ]] ; then
 		/usr/bin/echo "Run Failed - Exiting"
@@ -59,7 +59,7 @@ until [  "$totalit" == "-1" ]; do
 		/usr/bin/echo "CURRENT: $current"
 
 		#DOWNLOAD GRIB 
-        	/usr/bin/curl --fail  "http://nomads.ncep.noaa.gov/cgi-bin/filter_hrrr_2d.pl?file=$checkfile&&all_lev=on&var_CFRZR=on&var_CICEP=on&var_CRAIN=on&var_CSNOW=on&var_PRATE=on&var_PRES=on&var_REFC=on&&var_TMP=onvar_UGRD=on&var_VGRD=on&leftlon=0&rightlon=360&toplat=90&bottomlat=-90&dir=%2Fhrrr.$UTCDATE" > $HRRRSTAGING/$current > $HRRRSTAGING/$checkfile
+        	/usr/bin/curl --fail  "http://nomads.ncep.noaa.gov/cgi-bin/filter_hrrr_2d.pl?file=$checkfile&&all_lev=on&var_CFRZR=on&var_CICEP=on&var_CRAIN=on&var_CSNOW=on&var_PRATE=on&var_PRES=on&var_REFC=on&&var_TMP=onvar_UGRD=on&var_VGRD=on&leftlon=0&rightlon=360&toplat=90&bottomlat=-90&dir=%2Fhrrr.$UTCDATE%2Fconus" > $HRRRSTAGING/$checkfile
 		STATUS=$?
 		/usr/bin/echo "DOWNLOAD COMPLETE"
 		#CHECK if CURL RETURNED A good status
